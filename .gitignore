@@ -11,9 +11,8 @@ node_modules
 /public/build
 .env
 
-/cypress/screenshots
-/cypress/videos
-/prisma/data.db
-/prisma/data.db-journal
-
 /app/styles/tailwind.css
+
+db.sqlite
+db.sqlite-shm
+db.sqlite-wal

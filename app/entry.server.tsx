@@ -4,6 +4,7 @@ import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import { services } from "./services.server";
 
 const ABORT_DELAY = 5000;
 
@@ -51,3 +52,5 @@ export default function handleRequest(
     setTimeout(abort, ABORT_DELAY);
   });
 }
+
+services.items.start();
