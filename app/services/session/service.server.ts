@@ -60,7 +60,7 @@ export class SessionService {
     throw await this.destroy(request);
   }
 
-  async createUserSesstion({
+  async createUserSession({
     request,
     userId,
     remember,

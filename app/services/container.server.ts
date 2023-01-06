@@ -5,6 +5,8 @@ import MigrationService from "./migration/service.server";
 import { SessionService } from "./session/service.server";
 import UserRepo from "./user/repo.server";
 import UserService from "./user/service.server";
+import { NoteRepo } from "./note/repo.server";
+import NoteService from "./note/service.server";
 
 export const buildContainer = (config: Config) =>
   createContainer()
@@ -19,9 +21,11 @@ export const buildContainer = (config: Config) =>
       migrationService: () =>
         new MigrationService(ctx.database, config.migrationsPath),
       userRepo: () => new UserRepo(ctx.database),
+      noteRepo: () => new NoteRepo(ctx.database),
     }))
     .add((ctx) => ({
       userService: () => new UserService(ctx.userRepo),
+      noteService: () => new NoteService(ctx.noteRepo),
     }))
     .add((ctx) => ({
       sessionService: () => new SessionService(ctx.userService),

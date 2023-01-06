@@ -8,9 +8,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { services } from "./services.server";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import { getUser } from "./session.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => ({
 
 export async function loader({ request }: LoaderArgs) {
   return json({
-    user: await getUser(request),
+    user: services.items.sessionService.getUser(request),
   });
 }
 

@@ -1,7 +1,7 @@
+import { config } from "~/test/config";
 import { buildContainer } from "../container.server";
-import { testConfig } from "../test/config";
 
-const container = buildContainer(testConfig);
+const container = buildContainer(config);
 
 test("migrate all", () => {
   container.items.migrationService.migrate();

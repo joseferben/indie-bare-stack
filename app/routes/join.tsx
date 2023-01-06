@@ -3,13 +3,11 @@ import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
 
-import { getUserId, createUserSession } from "~/session.server";
-
-import { createUser, getUserByEmail } from "~/models/user.server";
+import { services } from "~/services.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
-  const userId = await getUserId(request);
+  const userId = await services.items.sessionService.getUserId(request);
   if (userId) return redirect("/");
   return json({});
 }
@@ -41,7 +39,7 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const existingUser = await getUserByEmail(email);
+  const existingUser = services.items.userService.findByEmail(email);
   if (existingUser) {
     return json(
       {
@@ -54,9 +52,9 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const user = await createUser(email, password);
+  const user = services.items.userService.create(email, password);
 
-  return createUserSession({
+  return services.items.sessionService.createUserSession({
     request,
     userId: user.id,
     remember: false,

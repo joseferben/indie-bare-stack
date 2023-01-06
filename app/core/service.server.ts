@@ -1,31 +1,32 @@
 import invariant from "tiny-invariant";
-import type { Entity, SpatialEntity } from "./entity";
-import type { Repo, SpatialQuery } from "./repo.server";
+import type { Entity } from "./entity";
+import type { SqlRepo } from "./repo.server";
 
-export class Service<E extends Entity> {
-  constructor(readonly repo: Repo<E>) {}
+export interface Service<E extends Entity> {
+  insert(entity: E): void;
+  update(entity: E): void;
+  find(id: string): E | null;
+  findAll(limit?: number): E[];
+  delete(entity: E): void;
+  refresh(entity: E): void;
+}
 
-  find(id: string) {
-    return this.repo.find(id);
-  }
+export class SqlService<E extends Entity> implements Service<E> {
+  constructor(readonly repo: SqlRepo<E>) {}
 
-  save(entity: E) {
-    if (this.repo.find(entity.id)) {
-      this.repo.update(entity);
-    } else {
-      this.repo.insert(entity);
-    }
-  }
-
-  insert(entity: E) {
+  insert(entity: E): void {
     this.repo.insert(entity);
   }
-
-  update(entity: E) {
+  update(entity: E): void {
     this.repo.update(entity);
   }
-
-  delete(entity: E) {
+  find(id: string): E | null {
+    return this.repo.find(id);
+  }
+  findAll(limit?: number | undefined): E[] {
+    return this.repo.findAll(limit || 100);
+  }
+  delete(entity: E): void {
     this.repo.delete(entity);
   }
 
@@ -37,24 +38,5 @@ export class Service<E extends Entity> {
       // @ts-ignore
       entity[k] = refreshed[k];
     }
-  }
-}
-
-export class SpatialService<E extends SpatialEntity> extends Service<E> {
-  constructor(readonly repo: Repo<E> & SpatialQuery<E>) {
-    super(repo);
-  }
-
-  findByPosition(x: number, y: number) {
-    return this.repo.findByPosition(Math.round(x), Math.round(y));
-  }
-
-  findInRectangle(xMin: number, yMin: number, xMax: number, yMax: number) {
-    return this.repo.findInRectangle(
-      Math.round(xMin),
-      Math.round(yMin),
-      Math.round(xMax),
-      Math.round(yMax)
-    );
   }
 }

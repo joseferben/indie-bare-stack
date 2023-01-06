@@ -1,10 +1,10 @@
 import invariant from "tiny-invariant";
 import { expect } from "vitest";
+import { config } from "~/test/config";
+import { cleanAllTables } from "~/test/utils";
 import { buildContainer } from "../container.server";
-import { testConfig } from "../test/config";
-import { cleanAllTables } from "../test/utils";
 
-const container = buildContainer(testConfig);
+const container = buildContainer(config);
 
 beforeAll(() => {
   container.items.migrationService.migrate();
@@ -14,22 +14,26 @@ beforeEach(() => {
   cleanAllTables(container.items.database);
 });
 
-test("set password initally", () => {
-  const player = container.items.playerService.create("dragonslayer");
-  const user = container.items.userService.find(player.userId);
+test("create user", () => {
+  const created = container.items.userService.create(
+    "dragonslayer@example.com",
+    "12345678"
+  );
+  const user = container.items.userService.find(created.id);
   invariant(user);
 
-  container.items.userService.setPassword(user, "12345678", "12345678");
   expect(
-    container.items.userService.verifyLogin(user.username, "12345678")
+    container.items.userService.verifyLogin(user.email, "12345678")
   ).toBeTruthy();
 });
 
 test("update old password", () => {
-  const player = container.items.playerService.create("dragonslayer");
-  const user = container.items.userService.find(player.userId);
+  const created = container.items.userService.create(
+    "dragonslayer@example.com",
+    "12345678"
+  );
+  const user = container.items.userService.find(created.id);
   invariant(user);
-  container.items.userService.setPassword(user, "12345678", "12345678");
 
   container.items.userService.updatePassword(
     user,
@@ -39,6 +43,6 @@ test("update old password", () => {
   );
 
   expect(
-    container.items.userService.verifyLogin(user.username, "87654321")
+    container.items.userService.verifyLogin(user.email, "87654321")
   ).toBeTruthy();
 });

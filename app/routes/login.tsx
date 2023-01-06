@@ -2,13 +2,12 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
+import { services } from "~/services.server";
 
-import { createUserSession, getUserId } from "~/session.server";
-import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
-  const userId = await getUserId(request);
+  const userId = await services.items.sessionService.getUserId(request);
   if (userId) return redirect("/");
   return json({});
 }
@@ -41,7 +40,7 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const user = await verifyLogin(email, password);
+  const user = services.items.userService.verifyLogin(email, password);
 
   if (!user) {
     return json(
@@ -50,7 +49,7 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  return createUserSession({
+  return services.items.sessionService.createUserSession({
     request,
     userId: user.id,
     remember: remember === "on" ? true : false,

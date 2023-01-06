@@ -2,12 +2,10 @@ import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
-
-import { createNote } from "~/models/note.server";
-import { requireUserId } from "~/session.server";
+import { services } from "~/services.server";
 
 export async function action({ request }: ActionArgs) {
-  const userId = await requireUserId(request);
+  const user = await services.items.sessionService.requireUser(request);
 
   const formData = await request.formData();
   const title = formData.get("title");
@@ -27,9 +25,13 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const note = await createNote({ title, body, userId });
+  const note = services.items.noteService.create(title, body, user);
 
-  return redirect(`/notes/${note.id}`);
+  if (note) {
+    return redirect(`/notes/${note.id}`);
+  } else {
+    return redirect(`/notes`);
+  }
 }
 
 export default function NewNotePage() {

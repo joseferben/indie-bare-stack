@@ -1,4 +1,4 @@
-import { Config } from "./core/config";
+import type { Config } from "./core/config";
 import { buildContainer } from "./services/container.server";
 
 const config: Config = {

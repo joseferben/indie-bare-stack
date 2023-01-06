@@ -1,30 +1,24 @@
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import invariant from "tiny-invariant";
-import { Service } from "../../core/service.server";
+import { SqlService } from "../../core/service.server";
 import type { User } from "./entity";
 import type UserRepo from "./repo.server";
 
-export default class UserService extends Service<User> {
+export default class UserService extends SqlService<User> {
   constructor(readonly repo: UserRepo) {
     super(repo);
-  }
-
-  findByUsername(name: string) {
-    return this.repo.findByName(name);
   }
 
   findByEmail(email: string) {
     return this.repo.findByEmail(email);
   }
 
-  create(name: string, password?: string, emailOr?: string) {
+  create(email: string, password: string) {
     const now = Date.now();
-    const hashedPassword = password ? bcrypt.hashSync(password, 10) : null;
-    const email = emailOr || null;
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const user: User = {
       id: nanoid(),
-      username: name,
       password: hashedPassword,
       email,
       joinedAt: now,
@@ -45,8 +39,8 @@ export default class UserService extends Service<User> {
     return bcrypt.compareSync(password, hashedPassword);
   }
 
-  verifyLogin(name: string, password: string): User | null {
-    const user = this.findByUsername(name);
+  verifyLogin(email: string, password: string): User | null {
+    const user = this.findByEmail(email);
 
     if (!user || !user.password) {
       return null;
@@ -72,8 +66,11 @@ export default class UserService extends Service<User> {
       "can not update password that do not match"
     );
     invariant(user.password, "can not update password if password was not set");
+    const foundCurrentHashedPassword = this.repo.findHashedPasswordById(
+      user.id
+    );
     invariant(
-      bcrypt.compareSync(currentPassword, user.password),
+      bcrypt.compareSync(currentPassword, foundCurrentHashedPassword),
       "current password does not match"
     );
     const hashedPassword = bcrypt.hashSync(newPassword, 10);

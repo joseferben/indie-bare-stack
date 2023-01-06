@@ -1,10 +1,9 @@
 import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-
-import { logout } from "~/session.server";
+import { services } from "~/services.server";
 
 export async function action({ request }: ActionArgs) {
-  return logout(request);
+  return services.items.sessionService.destroy(request);
 }
 
 export async function loader() {
