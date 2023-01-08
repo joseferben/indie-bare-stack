@@ -36,7 +36,7 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV DATABASE_URL=file:/data/sqlite.db
+ENV DATABASE_URL=/mnt/sqlite.db
 ENV PORT="8080"
 ENV NODE_ENV="production"
 
@@ -51,5 +51,11 @@ COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/public /myapp/public
 COPY --from=build /myapp/package.json /myapp/package.json
 COPY --from=build /myapp/start.sh /myapp/start.sh
+
+# so ~ can be resolved
+COPY --from=build /app/tsconfig.json /app/tsconfig.json
+# needed for migrations
+COPY --from=build /app/bin /app/bin
+COPY --from=build /app/app /app/app
 
 ENTRYPOINT [ "./start.sh" ]
