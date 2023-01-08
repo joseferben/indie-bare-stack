@@ -193,8 +193,6 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
 
   await Promise.all(fileOperationPromises);
 
-  execSync(pm.run("setup"), { cwd: rootDirectory, stdio: "inherit" });
-
   execSync(pm.run("format", "--loglevel warn"), {
     cwd: rootDirectory,
     stdio: "inherit",
