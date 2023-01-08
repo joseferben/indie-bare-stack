@@ -9,6 +9,7 @@ npx create-remix@latest --template joseferben/indie-bare-stack
 ## What's different to Indie Stack
 
 - Replaces Prisma ORM with `better-sqlite3` and SQL statements
+- Litestream setup
 - No Cypress for end-to-end testing
 - No mocking library
 - Dependency injection and service oriented architecture for clear life cycle management of state
@@ -151,7 +152,8 @@ Following [the official docs](https://litestream.io/guides/s3/) and create a buc
 
 Set the AWS secrets:
 
-`fly secrets set AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxxxxx AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxx`
+`fly secrets set AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxxxxx`
+`fly secrets set AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxx`
 
 ### Getting Help with Deployment
 

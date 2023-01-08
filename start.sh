@@ -18,7 +18,7 @@ fi
 
 npm run migrate
 
-litestream replicate -exec "npm run start" $DB_FILE "${REPLICA_URL}"
+litestream replicate -exec "npm run start" $DATABASE_URL "${REPLICA_URL}"
 
 
 
