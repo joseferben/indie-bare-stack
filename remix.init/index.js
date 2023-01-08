@@ -110,7 +110,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     rootDirectory,
     ".github",
     "workflows",
-    "deploy.yml"
+    "ci.yml"
   );
   const DOCKERFILE_PATH = path.join(rootDirectory, "Dockerfile");
   const VITEST_CONFIG_PATH = path.join(
