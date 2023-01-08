@@ -3,7 +3,7 @@
 This is a fork of the [Remix Indie Stack](https://github.com/remix-run/indie-stack). Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```
-npx create-remix@latest --template joseferben/indie-stack-bare
+npx create-remix@latest --template joseferben/indie-bare-stack
 ```
 
 ## What's different to Indie Stack
