@@ -5,6 +5,6 @@
 /.cache
 /public/build
 /build
-db.sqlite
-db.sqlite-shm
-db.sqlite-wal
+data.sqlite3
+data.sqlite3-shm
+data.sqlite3-wal

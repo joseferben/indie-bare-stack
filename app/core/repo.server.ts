@@ -17,7 +17,7 @@ export class SqlRepo<E extends Entity> implements Repo<E> {
   readonly selectStmt: Statement<[string]>;
   readonly insertStmt: Statement<[E]>;
   readonly updateStmt: Statement<[E]>;
-  readonly deleteStmt: Statement<[E]>;
+  readonly deleteStmt: Statement<[string]>;
   readonly dirname: string;
 
   constructor(
@@ -100,6 +100,6 @@ export class SqlRepo<E extends Entity> implements Repo<E> {
   }
 
   delete(entity: E) {
-    this.deleteStmt.run(entity);
+    this.deleteStmt.run(entity.id);
   }
 }
