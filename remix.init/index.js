@@ -118,7 +118,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     `vitest.config.${FILE_EXTENSION}`
   );
 
-  const REPLACER = "indie-stack-template";
+  const REPLACER = "indie-bare-stack-template";
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
@@ -179,11 +179,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
       path.join(rootDirectory, "remix.init", "gitignore"),
       path.join(rootDirectory, ".gitignore")
     ),
-    fs.rm(path.join(rootDirectory, ".github", "ISSUE_TEMPLATE"), {
-      recursive: true,
-    }),
-    fs.rm(path.join(rootDirectory, ".github", "dependabot.yml")),
-    fs.rm(path.join(rootDirectory, ".github", "PULL_REQUEST_TEMPLATE.md")),
+    fs.rm(path.join(rootDirectory, ".github", "ci.yml")),
   ];
 
   if (!isTypeScript) {
