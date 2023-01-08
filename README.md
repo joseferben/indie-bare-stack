@@ -32,7 +32,7 @@ Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --
 ## Development
 
 - This step only applies if you've opted out of having the CLI install dependencies for you:
-  
+
   ```sh
   npx remix init
   ```
@@ -86,6 +86,7 @@ Prior to your first deployment, you'll need to do a few things:
   fly apps create indie-stack-template
   fly apps create indie-stack-template-staging
   ```
+
   > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
 
   - Initialize Git.
