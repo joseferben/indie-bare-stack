@@ -5,7 +5,7 @@ import type { Note } from "./entity";
 export class NoteRepo extends SqlRepo<Note> {
   selectByUserIdStmt: Statement<[string]>;
   constructor(readonly db: Database) {
-    super(db, __dirname, []);
+    super(db, []);
     this.selectByUserIdStmt = this.prepareSqlFromFile("select-by-user.sql");
   }
 

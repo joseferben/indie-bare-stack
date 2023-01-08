@@ -18,12 +18,16 @@ export class SqlRepo<E extends Entity> implements Repo<E> {
   readonly insertStmt: Statement<[E]>;
   readonly updateStmt: Statement<[E]>;
   readonly deleteStmt: Statement<[E]>;
+  readonly dirname: string;
 
   constructor(
     readonly db: Database,
-    readonly dirname: string,
-    readonly booleanFields: string[]
+    readonly booleanFields: string[],
+    readonly servicsDir?: string
   ) {
+    const services = servicsDir || `${process.cwd()}/app/services/`;
+    const serviceName = this.constructor.name.replace("Repo", "").toLowerCase();
+    this.dirname = `${services}${serviceName}`;
     this.selectAllStmt = this.prepareSqlFromFile("select-all.sql");
     this.selectStmt = this.prepareSqlFromFile("select.sql");
     this.insertStmt = this.prepareSqlFromFile("insert.sql");

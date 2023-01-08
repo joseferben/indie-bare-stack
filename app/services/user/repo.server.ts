@@ -28,7 +28,7 @@ export default class UserRepo extends SqlRepo<User> {
   readonly selectHashedPasswordByIdStmt: Statement<[string]>;
 
   constructor(db: Database) {
-    super(db, __dirname, []);
+    super(db, []);
     this.selectByEmailStmt = this.prepareSql(selectByEmailSql);
     this.selectHashedPasswordByIdStmt = this.prepareSql(
       selectHashedPasswordByIdSql
