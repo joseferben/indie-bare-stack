@@ -9,7 +9,7 @@
     "dev": "run-p dev:*",
     "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development binode -- @remix-run/dev:remix dev",
-    "dev:migrate": "cross-env DATABASE_URL=data.sqlite3 NODE_ENV=development npm run migrate",
+    "dev:migrate": "cross-env DATABASE_URL=db.sqlite3 NODE_ENV=development npm run migrate",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
